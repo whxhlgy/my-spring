@@ -2,6 +2,7 @@ package org.zjj.myspring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import org.zjj.myspring.beans.PropertyValue;
+import org.zjj.myspring.beans.factory.BeanReference;
 import org.zjj.myspring.beans.factory.BeansException;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 
@@ -37,6 +38,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             for (PropertyValue value : beanDefinition.getValues().getValueList()) {
                 String name = value.getName();
                 Object v = value.getValue();
+                // if the value is a BeanReference, get the bean instance.
+                // not support circular reference
+                if (v instanceof BeanReference) {
+                    BeanReference beanReference = (BeanReference) v;
+                    v = getBean(beanReference.getBeanName());
+                }
+
+                // set value by reflection
                 BeanUtil.setFieldValue(bean, name, v);
             }
         } catch (Exception e) {
