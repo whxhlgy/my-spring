@@ -1,4 +1,4 @@
-package org.zjj.myspring.factory;
+package org.zjj.myspring.beans.factory.support;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

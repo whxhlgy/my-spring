@@ -1,9 +1,12 @@
-package org.zjj.myspring.factory;
+package org.zjj.myspring.beans.factory.support;
 
-import org.zjj.myspring.factory.config.BeanDefinition;
+import org.zjj.myspring.beans.factory.BeansException;
+import org.zjj.myspring.beans.factory.BeanFactory;
+import org.zjj.myspring.beans.factory.config.BeanDefinition;
 
 /**
  * An abstract base class implements BeanFactory.
+ * Can manage singleton bean cache and provide a method to get bean.
  *
  * @author zhongjunjie on 2024/4/7
  */

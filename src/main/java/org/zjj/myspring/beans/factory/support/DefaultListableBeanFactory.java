@@ -1,6 +1,6 @@
-package org.zjj.myspring.factory;
+package org.zjj.myspring.beans.factory.support;
 
-import org.zjj.myspring.factory.config.BeanDefinition;
+import org.zjj.myspring.beans.factory.config.BeanDefinition;
 
 import java.util.HashMap;
 import java.util.Map;

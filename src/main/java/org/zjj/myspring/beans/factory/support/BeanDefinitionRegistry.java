@@ -1,6 +1,6 @@
-package org.zjj.myspring.factory;
+package org.zjj.myspring.beans.factory.support;
 
-import org.zjj.myspring.factory.config.BeanDefinition;
+import org.zjj.myspring.beans.factory.config.BeanDefinition;
 
 /**
  * @author zhongjunjie on 2024/4/7

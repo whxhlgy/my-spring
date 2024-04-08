@@ -1,4 +1,4 @@
-package org.zjj.myspring.ioc;
+package org.zjj.myspring.ioc.bean;
 
 /**
  * @author zhongjunjie on 2024/4/7

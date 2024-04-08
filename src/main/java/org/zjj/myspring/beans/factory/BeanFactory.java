@@ -1,4 +1,4 @@
-package org.zjj.myspring.factory;
+package org.zjj.myspring.beans.factory;
 
 /**
  * @author zhongjunjie on 2024/4/7
