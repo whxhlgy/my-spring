@@ -1,7 +1,10 @@
 package org.zjj.myspring.core.io;
 
 /**
- * Interface meant to be implemented by objects that can load resources.
+ * Strategy interface for loading resources.
+ * Strategy type including like classpath, file system, etc.
+ *
+ * <p>DefaultResourceLoader is a implementation of this interface</p>
  *
  * @author zhongjunjie on 2024/4/8
  */

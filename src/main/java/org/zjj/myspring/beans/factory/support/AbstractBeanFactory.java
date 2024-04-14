@@ -23,6 +23,11 @@ public abstract class AbstractBeanFactory extends DefaultSingletonRegistry imple
         return bean;
     }
 
+    @Override
+    public Object getBean(String name, Class<?> requiredType) throws BeansException {
+        return null;
+    }
+
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition);
 
     protected abstract BeanDefinition getBeanDefinition(String beanName);

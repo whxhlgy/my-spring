@@ -30,6 +30,10 @@ Implement the AbstractBeanFactory.
 - It can create a bean from bean definition (involves creation, populating properties, and initialization)
 - It can also resolve bean reference
 
+#### BeanDefinitionRegistry 
+
+Interface implemented by objects which can register bean definition. 
+
 #### DefaultListableFactory
 
-This factory is responsible for registering bean definition.
+This factory is responsible for registering bean definition and create bean from bean definition.

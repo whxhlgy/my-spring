@@ -2,6 +2,8 @@ package org.zjj.myspring.beans.factory.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import org.zjj.myspring.beans.PropertyValue;
 import org.zjj.myspring.beans.PropertyValues;
 
 /**
@@ -16,10 +18,14 @@ import org.zjj.myspring.beans.PropertyValues;
 public class BeanDefinition {
     private Class<?> beanClass;
 
-    private PropertyValues values;
+    private PropertyValues propertyValues;
 
     public BeanDefinition(Class<?> beanClass) {
         this.beanClass = beanClass;
-        values = new PropertyValues();
+        propertyValues = new PropertyValues();
+    }
+
+    public void addPropertyValue(String name, Object value) {
+        propertyValues.addPropertyValue(new PropertyValue(name, value));
     }
 }
