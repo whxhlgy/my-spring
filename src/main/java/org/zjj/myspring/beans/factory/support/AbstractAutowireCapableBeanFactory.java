@@ -6,6 +6,7 @@ import org.zjj.myspring.beans.factory.BeanReference;
 import org.zjj.myspring.beans.factory.BeansException;
 import org.zjj.myspring.beans.factory.config.AutowireCapableBeanFactory;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
+import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 
 /**
  * This factory is responsible for creating bean instances.
@@ -28,11 +29,60 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             Object bean = createBeanInstance(beanDefinition);
             // populate bean with property values
             applyPropertyValues(beanName, bean, beanDefinition);
+            // extension point: allow post-process bean before initialization
+            bean = initializeBean(beanName, bean, beanDefinition);
             addSingleton(beanName, bean);
             return bean;
         } catch (Exception e) {
             throw new BeansException("Initialization of bean failed: " + beanName, e);
         }
+    }
+
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+
+        Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
+
+        // TODO: invoke init method of bean
+        invokeInitMethods(beanName, wrappedBean, beanDefinition);
+
+        wrappedBean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+
+        return wrappedBean;
+    }
+
+    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
+        // TODO Auto-generated method stub
+        System.out.println("invoke init method of bean: " + beanName);
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsBeforeInitialization(Object bean, String beanName) {
+        Object result = bean;
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object beanWrapper = processor.postProcessBeforeInitialization(result, beanName);
+            // if the processor returns null, indicate that the no subsequent
+            // processors should be called
+            if (beanWrapper == null) {
+                return result;
+            }
+            result = beanWrapper;
+        }
+        return result;
+    }
+
+    @Override
+    public Object applyBeanPostProcessorsAfterInitialization(Object bean, String beanName) {
+        Object result = bean;
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            Object beanWrapper = processor.postProcessAfterInitialization(result, beanName);
+            // if the processor returns null, indicate that the no subsequent
+            // processors should be called
+            if (beanWrapper == null) {
+                return result;
+            }
+            result = beanWrapper;
+        }
+        return result;
     }
 
     private void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {

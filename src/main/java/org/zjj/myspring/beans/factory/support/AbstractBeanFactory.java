@@ -1,8 +1,14 @@
 package org.zjj.myspring.beans.factory.support;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.zjj.myspring.beans.factory.BeansException;
-import org.zjj.myspring.beans.factory.BeanFactory;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
+import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
+import org.zjj.myspring.beans.factory.config.ConfigurableBeanFactory;
+
+import lombok.Getter;
 
 /**
  * An abstract base class implements BeanFactory.
@@ -10,7 +16,12 @@ import org.zjj.myspring.beans.factory.config.BeanDefinition;
  *
  * @author zhongjunjie on 2024/4/7
  */
-public abstract class AbstractBeanFactory extends DefaultSingletonRegistry implements BeanFactory {
+public abstract class AbstractBeanFactory extends DefaultSingletonRegistry
+    implements ConfigurableBeanFactory {
+
+    @Getter
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+
     @Override
     public Object getBean(String name) throws BeansException {
         Object bean = getSingleton(name);
@@ -26,6 +37,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonRegistry imple
     @Override
     public Object getBean(String name, Class<?> requiredType) throws BeansException {
         return null;
+    }
+
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
+        this.beanPostProcessors.remove(beanPostProcessor); // remove the old duplicated one
+        this.beanPostProcessors.add(beanPostProcessor);
     }
 
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition);

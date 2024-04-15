@@ -1,10 +1,9 @@
 package org.zjj.myspring.beans.factory.xml;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.XmlUtil;
+import java.io.InputStream;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.zjj.myspring.beans.PropertyValue;
 import org.zjj.myspring.beans.factory.BeanReference;
@@ -15,7 +14,8 @@ import org.zjj.myspring.beans.factory.support.BeanDefinitionRegistry;
 import org.zjj.myspring.core.io.Resource;
 import org.zjj.myspring.core.io.ResourceLoader;
 
-import java.io.InputStream;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.XmlUtil;
 
 /**
  * @author zhongjunjie on 2024/4/9
@@ -75,9 +75,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     // use id take precedence over name
                     String beanName = StrUtil.isNotEmpty(id) ? id : name;
                     if (StrUtil.isEmpty(beanName)) {
-						// if id and name are both emptye
-						beanName = StrUtil.lowerFirst(clazz.getSimpleName());
-					}
+                        // if id and name are both emptye
+                        beanName = StrUtil.lowerFirst(clazz.getSimpleName());
+                    }
                     BeanDefinition beanDefinition = new BeanDefinition(clazz);
 
                     for (int j = 0; j < bean.getChildNodes().getLength(); j++) {
@@ -99,7 +99,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                             beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
                         }
                     }
-                    
+
                     if (this.getRegistry().containsBeanDefinition(beanName)) {
                         // beanName cannot be duplicated
                         throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");

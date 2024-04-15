@@ -7,5 +7,5 @@ import org.zjj.myspring.beans.factory.support.SingletonRegistry;
  * provide facilities to configure bean instances.
  */
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonRegistry {
-    
+    void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 }

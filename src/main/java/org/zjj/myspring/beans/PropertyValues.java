@@ -13,6 +13,14 @@ public class PropertyValues {
     private List<PropertyValue> valueList = new ArrayList<>();
 
     public void addPropertyValue(PropertyValue v) {
+        for (int i = 0; i < valueList.size(); i++) {
+            PropertyValue current = valueList.get(i);
+            // replace the value if there is a existing one
+            if (current.getName().equals(v.getName())) {
+                valueList.set(i, v);
+                return;
+            }
+        }
         valueList.add(v);
     }
 }
