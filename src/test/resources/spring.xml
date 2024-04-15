@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance
-	         http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="person" class="org.zjj.myspring.ioc.bean.Person">
-        <property name="name" value="derek"/>
-        <property name="car" ref="car"/>
-    </bean>
-
-    <bean id="car" class="org.zjj.myspring.ioc.bean.Car">
-        <property name="brand" value="porsche"/>
-    </bean>
-
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance           http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean class="org.zjj.myspring.ioc.bean.Person" id="person">
+    <property name="name" value="derek"></property>
+    <property name="car" ref="car"></property>
+  </bean>
+  <bean class="org.zjj.myspring.ioc.bean.Car" id="car">
+    <property name="brand" value="porsche"></property>
+  </bean>
+  <bean class="org.zjj.myspring.ioc.common.CustomBeanPostProcessor" id="customBeanPostProcessor"></bean>
+  <bean class="org.zjj.myspring.ioc.common.CustomBeanFactoryPostProcessor" id="customBeanFactoryPostProcessor"></bean>
 </beans>

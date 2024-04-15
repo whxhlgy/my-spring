@@ -10,11 +10,11 @@ import org.zjj.myspring.beans.factory.config.ConfigurableBeanFactory;
 public interface ConfigurableListableBeanFactory
 extends AutowireCapableBeanFactory, ConfigurableBeanFactory, ListableBeanFactory {
 
-    public BeanDefinition getBeanDefinition(String beanName);
+    BeanDefinition getBeanDefinition(String beanName);
 
     /**
      * Ensure that all non-lazy-init singletons are instantiated.
      * @throws BeansException
      */
-    public void preInstantiateSingletons() throws BeansException;
+    void preInstantiateSingletons() throws BeansException;
 }

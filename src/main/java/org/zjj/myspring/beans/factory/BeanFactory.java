@@ -5,7 +5,7 @@ package org.zjj.myspring.beans.factory;
  */
 public interface BeanFactory {
 
-    Object getBean(String name, Class<?> requiredType) throws BeansException;
+    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
     Object getBean(String name) throws BeansException;
 
