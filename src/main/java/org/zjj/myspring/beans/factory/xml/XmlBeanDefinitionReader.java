@@ -22,6 +22,8 @@ import cn.hutool.core.util.XmlUtil;
  */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
+    public static final String DESTORY_METHOD_ATTRIBUTE = "destroy-method";
+    public static final String INIT_METHOD_ATTRIBUTE = "init-method";
     public static final String BEAN_ELEMENT = "bean";
     public static final String PROPERTY_ELEMENT = "property";
     public static final String ID_ATTRIBUTE = "id";
@@ -64,6 +66,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     String id = bean.getAttribute(ID_ATTRIBUTE);
                     String name = bean.getAttribute(NAME_ATTRIBUTE);
                     String className = bean.getAttribute(CLASS_ATTRIBUTE);
+                    String initMethodName = bean.getAttribute(INIT_METHOD_ATTRIBUTE);
+                    String destoryMethodName = bean.getAttribute(DESTORY_METHOD_ATTRIBUTE);
                     Class<?> clazz = null;
 
                     try {
@@ -79,6 +83,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                         beanName = StrUtil.lowerFirst(clazz.getSimpleName());
                     }
                     BeanDefinition beanDefinition = new BeanDefinition(clazz);
+                    beanDefinition.setInitMethodName(initMethodName);
+                    beanDefinition.setDestroyMethodName(destoryMethodName);
 
                     for (int j = 0; j < bean.getChildNodes().getLength(); j++) {
                         if (bean.getChildNodes().item(j) instanceof Element)  {

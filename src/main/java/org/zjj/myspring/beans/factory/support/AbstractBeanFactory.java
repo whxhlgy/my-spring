@@ -12,7 +12,9 @@ import lombok.Getter;
 
 /**
  * An abstract base class implements BeanFactory.
- * Can manage singleton bean cache and provide a method to get bean.
+ * It holds a number of bean definition(which inherited from DefaultSingletonRegistry)
+ *
+ * Subclass need to implements getBean and getBeanDefinition method.
  *
  * @author zhongjunjie on 2024/4/7
  */

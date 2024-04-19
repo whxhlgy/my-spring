@@ -117,3 +117,56 @@ provide facilities to register bd.
 
     String[] getBeanDefinitionNames();
 ```
+
+![](./assets/README-1713281841626.png)
+
+### ApplicationContext
+
+the most difference between BeanFactory and ApplicationContext is:
+
+**Bean Factory**
+
+- Bean instantiation/wiring
+
+**Application Context**
+
+- Bean instantiation/wiring
+- Automatic BeanPostProcessor registration
+- Automatic BeanFactoryPostProcessor registration
+
+[//]: # (- Convenient MessageSource access &#40;for i18n&#41;)
+
+[//]: # (- ApplicationEvent publication)
+
+
+### ConfigurableApplicationContext
+the SPI interface to be implemented by most if not all application contexts.
+
+one of the implementations of **refresh**:
+
+```java
+@Override
+    public void refresh() throws BeansException {
+        // Tell the subclass to refresh the internal bean factory.
+        refreshBeanFactory();
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+
+        // Before the bean factory is initialized,
+        // let the post-processors apply any bean definitions they need.
+        invokeBeanFactoryPostProcessors(beanFactory);
+
+        // Register bean processors that intercept bean creation.
+        registerBeanPostProcessors(beanFactory);
+
+        // pre instantiate singletons
+        beanFactory.preInstantiateSingletons();
+    }
+```
+you can see that refresh method can create (or refresh) a beanFactory. And automatically invoke the BeanFactoryPostProcessors and register the bean processors.
+
+### AbstractApplicationContext
+Base class for ApplicationContext implementations.
+Subclass need to implement the refreshBeanFactory() and getBeanFactory() methods.
+
+### Aware interface
+

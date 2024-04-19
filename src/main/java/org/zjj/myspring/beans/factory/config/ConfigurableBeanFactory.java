@@ -8,4 +8,6 @@ import org.zjj.myspring.beans.factory.support.SingletonRegistry;
  */
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonRegistry {
     void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
+
+    void destroySingletons();
 }

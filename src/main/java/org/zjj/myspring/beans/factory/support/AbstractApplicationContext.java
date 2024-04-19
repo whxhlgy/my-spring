@@ -10,8 +10,8 @@ import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 import org.zjj.myspring.core.io.DefaultResourceLoader;
 
 /**
- * Base class for ApplicationContext implementations
- * subclass need to implement the refreshBeanFactory() and getBeanFactory() methods.
+ * Base class for ApplicationContext implementations.
+ * Subclass need to implement the refreshBeanFactory() and getBeanFactory() methods.
  */
 public abstract class AbstractApplicationContext extends DefaultResourceLoader
     implements ConfigurableApplicationContext {
@@ -60,6 +60,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
     public abstract ConfigurableListableBeanFactory getBeanFactory();
 
+    @Override
+    public void close() {
+        doClose();
+    }
+
+    @Override
+    public void registerShutdownHook() {
+        Thread shutDownHook = new Thread() {
+            @Override
+            public void run() {
+                doDestory();
+            }
+        };
+        Runtime.getRuntime().addShutdownHook(shutDownHook);
+    }
+
     /**
      * Register BeanPostProcessors that intercept bean creation.
      * @param beanFactory
@@ -83,4 +99,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
             processor.postProcessBeanFactory(beanFactory);
         }
     }
+
+    private void doClose() {
+        destoryBeans();
+    }
+
+    private void destoryBeans() {
+        getBeanFactory().destroySingletons();
+    }
+    private void doDestory() {
+        close();
+    };
 }

@@ -14,16 +14,26 @@ import org.zjj.myspring.beans.PropertyValues;
  * @author zhongjunjie on 2024/4/7
  */
 @Data
-@AllArgsConstructor
 public class BeanDefinition {
     private Class<?> beanClass;
 
     private PropertyValues propertyValues;
 
+    private String initMethodName;
+
+    private String destroyMethodName;
+
     public BeanDefinition(Class<?> beanClass) {
         this.beanClass = beanClass;
         propertyValues = new PropertyValues();
     }
+
+
+    public BeanDefinition(Class<?> beanClass, PropertyValues propertyValues) {
+        this.beanClass = beanClass;
+        this.propertyValues = propertyValues;
+    }
+
 
     public void addPropertyValue(String name, Object value) {
         propertyValues.addPropertyValue(new PropertyValue(name, value));
