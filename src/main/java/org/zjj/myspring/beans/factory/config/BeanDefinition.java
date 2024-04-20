@@ -14,6 +14,9 @@ import org.zjj.myspring.beans.PropertyValues;
  */
 @Data
 public class BeanDefinition {
+    private static final String SCOPE_PROTOTYPE = "prototype";
+    private static final String SCOPE_SINGLETON = "singleton";
+
     private Class<?> beanClass;
 
     private PropertyValues propertyValues;
@@ -22,15 +25,26 @@ public class BeanDefinition {
 
     private String destroyMethodName;
 
+    private String scope = SCOPE_SINGLETON;
+
+    private boolean singleton = true;
+
+    private boolean prototype = false;
+
     public BeanDefinition(Class<?> beanClass) {
         this.beanClass = beanClass;
         propertyValues = new PropertyValues();
     }
 
-
     public BeanDefinition(Class<?> beanClass, PropertyValues propertyValues) {
         this.beanClass = beanClass;
         this.propertyValues = propertyValues;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        setSingleton(SCOPE_SINGLETON.equals(scope));
+        setPrototype(SCOPE_PROTOTYPE.equals(scope));
     }
 
 

@@ -200,3 +200,15 @@ We have two Aware interfaces:
   beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
   ```
 
+### Bean Life Cycle
+
+![](./assets/README-1713595889874.png)
+
+There is no difference between afterPropertiesSet and init-method except the priority.
+
+Only singleton beans need to be registered for destruction, this is beacause that:
+
+- You don't have to do anything if the prototype bean is not used, it will be garbage collected.
+- In contrast to the other scopes, Spring does not manage the complete lifecycle of a prototype bean.
+- The client code must clean up prototype-scoped objects and release
+  expensive resources that the prototype bean(s) are holding.

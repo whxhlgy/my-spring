@@ -32,6 +32,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public static final String CLASS_ATTRIBUTE = "class";
     public static final String VALUE_ATTRIBUTE = "value";
     public static final String REF_ATTRIBUTE = "ref";
+    public static final String SCOPE_ATTRIBUTE = "scope";
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
         super(registry);
@@ -68,6 +69,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String className = next.attributeValue(CLASS_ATTRIBUTE);
             String initMethodName = next.attributeValue(INIT_METHOD_ATTRIBUTE);
             String destroyMethodName = next.attributeValue(DESTORY_METHOD_ATTRIBUTE);
+            String scope = next.attributeValue(SCOPE_ATTRIBUTE);
             Class<?> clazz = null;
 
             try {
@@ -85,6 +87,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             BeanDefinition beanDefinition = new BeanDefinition(clazz);
             beanDefinition.setInitMethodName(initMethodName);
             beanDefinition.setDestroyMethodName(destroyMethodName);
+            if (StrUtil.isNotEmpty(scope)) {
+                beanDefinition.setScope(scope);
+            }
 
             for (Iterator<Element> it2 = next.elementIterator(PROPERTY_ELEMENT); it2.hasNext(); ) {
                 Element property = it2.next();
