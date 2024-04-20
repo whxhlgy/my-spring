@@ -1,7 +1,7 @@
 package org.zjj.myspring.beans.factory.config;
 
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.factory.BeanFactory;
-import org.zjj.myspring.beans.factory.BeansException;
 
 /**
  * implemented by bean factories that are capable of autowiring, provided that they want to

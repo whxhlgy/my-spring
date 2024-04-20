@@ -1,7 +1,7 @@
 package org.zjj.myspring.ioc;
 
 import org.junit.Test;
-import org.zjj.myspring.beans.factory.support.ClassPathXmlApplicationContext;
+import org.zjj.myspring.context.support.ClassPathXmlApplicationContext;
 
 public class InitAndDestroyTest {
     @Test

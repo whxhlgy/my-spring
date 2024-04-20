@@ -1,6 +1,6 @@
 package org.zjj.myspring.ioc.common;
 
-import org.zjj.myspring.beans.factory.BeansException;
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 import org.zjj.myspring.ioc.bean.Car;
 
@@ -8,7 +8,7 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("CustomerBeanPostProcessor#postProcessBeforeInitialization");
+        System.out.println("CustomerBeanPostProcessor#postProcessBeforeInitialization" + " BeanName: " + beanName);
         if ("car".equals(beanName)) {
             ((Car) bean).setBrand("lamborghini" );
         }
@@ -17,7 +17,7 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("CustomerBeanPostProcessor#postProcessAfterInitialization");
+        System.out.println("CustomerBeanPostProcessor#postProcessAfterInitialization " + "beanName: " + beanName);
         return bean;
     }
 

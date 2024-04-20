@@ -1,6 +1,6 @@
 package org.zjj.myspring.beans.factory.support;
 
-import org.zjj.myspring.beans.factory.BeansException;
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.core.io.Resource;
 import org.zjj.myspring.core.io.ResourceLoader;
 

@@ -1,8 +1,8 @@
 package org.zjj.myspring.ioc.common;
 
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.PropertyValue;
 import org.zjj.myspring.beans.PropertyValues;
-import org.zjj.myspring.beans.factory.BeansException;
 import org.zjj.myspring.beans.factory.ConfigurableListableBeanFactory;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.config.BeanFactoryPostProcessor;

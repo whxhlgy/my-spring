@@ -1,5 +1,7 @@
 package org.zjj.myspring.beans.factory;
 
+import org.zjj.myspring.beans.BeansException;
+
 /**
  * @author zhongjunjie on 2024/4/7
  */

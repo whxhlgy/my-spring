@@ -1,6 +1,5 @@
 package org.zjj.myspring.beans.factory.config;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import org.zjj.myspring.beans.PropertyValue;

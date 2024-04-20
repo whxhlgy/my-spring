@@ -6,9 +6,10 @@ import cn.hutool.core.util.StrUtil;
 
 import java.lang.reflect.Method;
 
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.PropertyValue;
+import org.zjj.myspring.beans.factory.BeanFactoryAware;
 import org.zjj.myspring.beans.factory.BeanReference;
-import org.zjj.myspring.beans.factory.BeansException;
 import org.zjj.myspring.beans.factory.DisposableBean;
 import org.zjj.myspring.beans.factory.InitializingBean;
 import org.zjj.myspring.beans.factory.config.AutowireCapableBeanFactory;
@@ -56,6 +57,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+
+        // automatically inject BeanFactory if the bean implements BeanFactoryAware
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
 
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 

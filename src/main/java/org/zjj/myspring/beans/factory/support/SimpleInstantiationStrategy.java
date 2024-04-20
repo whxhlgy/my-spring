@@ -1,6 +1,6 @@
 package org.zjj.myspring.beans.factory.support;
 
-import org.zjj.myspring.beans.factory.BeansException;
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 
 /**

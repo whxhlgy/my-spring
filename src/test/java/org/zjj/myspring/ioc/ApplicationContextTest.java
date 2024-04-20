@@ -3,7 +3,7 @@ package org.zjj.myspring.ioc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import org.zjj.myspring.beans.factory.support.ClassPathXmlApplicationContext;
+import org.zjj.myspring.context.support.ClassPathXmlApplicationContext;
 import org.zjj.myspring.ioc.bean.Car;
 import org.zjj.myspring.ioc.bean.Person;
 

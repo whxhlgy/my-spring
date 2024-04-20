@@ -1,4 +1,6 @@
-package org.zjj.myspring.beans.factory;
+package org.zjj.myspring.context;
+
+import org.zjj.myspring.beans.BeansException;
 
 /**
  * SPI interface to be implemented by most if not all application contexts.

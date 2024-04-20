@@ -1,5 +1,7 @@
 package org.zjj.myspring.beans.factory;
 
+import org.zjj.myspring.beans.BeansException;
+
 /**
  * Interface to be implemented by beans that need to react once all their properties
  * have been set by a BeanFactory.

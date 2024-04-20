@@ -1,9 +1,9 @@
-package org.zjj.myspring.beans.factory.support;
+package org.zjj.myspring.context.support;
 
 import java.util.Map;
 
-import org.zjj.myspring.beans.factory.BeansException;
-import org.zjj.myspring.beans.factory.ConfigurableApplicationContext;
+import org.zjj.myspring.beans.BeansException;
+import org.zjj.myspring.context.ConfigurableApplicationContext;
 import org.zjj.myspring.beans.factory.ConfigurableListableBeanFactory;
 import org.zjj.myspring.beans.factory.config.BeanFactoryPostProcessor;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
@@ -41,6 +41,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
         // Tell the subclass to refresh the internal bean factory.
         refreshBeanFactory();
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+
+        // Add a bean post-processor that can inject the ApplicationContext
+        // into applicationContextAware beans.
+        beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
         // Before the bean factory is initialized,
         // let the post-processors apply any bean definitions they need.

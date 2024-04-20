@@ -9,4 +9,5 @@
   </bean>
   <bean class="org.zjj.myspring.ioc.common.CustomBeanPostProcessor" id="customBeanPostProcessor"></bean>
   <bean class="org.zjj.myspring.ioc.common.CustomBeanFactoryPostProcessor" id="customBeanFactoryPostProcessor"></bean>
+  <bean class="org.zjj.myspring.ioc.bean.HelloService" id="helloService"></bean>
 </beans>

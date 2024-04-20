@@ -3,7 +3,7 @@ package org.zjj.myspring.beans.factory.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.zjj.myspring.beans.factory.BeansException;
+import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 import org.zjj.myspring.beans.factory.config.ConfigurableBeanFactory;
