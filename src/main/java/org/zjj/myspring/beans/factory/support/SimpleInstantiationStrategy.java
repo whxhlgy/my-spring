@@ -8,7 +8,7 @@ import org.zjj.myspring.beans.factory.config.BeanDefinition;
  */
 public class SimpleInstantiationStrategy implements InstantiationStrategy {
     /**
-     * Instantiate a bean using no-args constructor
+     * Instantiate a bean using no-args constructor(only support no-args constructor)
      * @param beanDefinition
      * @return
      * @throws BeansException

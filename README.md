@@ -4,69 +4,51 @@ This is a tory project to simulate basic spring framework functionality.
 
 ## Core: IOC
 
-[//]: # (### Factory)
-
-[//]: # ()
-[//]: # (![Factory]&#40;./assets/README-1712649520345.png&#41;)
-
-[//]: # ()
-[//]: # (#### BeanFactory)
-
-[//]: # ()
-[//]: # (`BeanFactory` is a root interface to access bean container. It is implemented by objects which hold a number of `beanDefinition`.)
-
-[//]: # ()
-[//]: # (`beanDefinition` contains all the information that create a bean needed. Such as the type of bean &#40;Singleton or independent&#41; // FIX ME)
-
-[//]: # ()
-[//]: # (```java)
-
-[//]: # (// get bean)
-
-[//]: # (Object getBean&#40;String name&#41; throws BeansException;)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (#### AbstractBeanFactory)
-
-[//]: # (I implement `BeanFactory` by `AbstractBeanFactory`, which also extends the `DefaultSingletonBeanRegister`,indicates )
-
-[//]: # (that this has a singleton cache to provide shared instance. )
-
-[//]: # ()
-[//]: # (This is a base factory class implemented by beanFactory implementations that can obtain bean definition from some resources.)
-
-[//]: # ()
-[//]: # (#### AbstractAutowiredCapableBeanFactory)
-
-[//]: # (Implement the AbstractBeanFactory.)
-
-[//]: # (- It can create a bean from bean definition &#40;involves creation, populating properties, and initialization&#41;)
-
-[//]: # (- It can also resolve bean reference)
-
-[//]: # ()
-[//]: # (#### BeanDefinitionRegistry )
-
-[//]: # ()
-[//]: # (Interface implemented by objects which can register bean definition. )
-
-[//]: # ()
-[//]: # (#### DefaultListableFactory)
-
-[//]: # ()
-[//]: # (This factory is responsible for registering bean definition and create bean from bean definition.)
-
-[//]: # ()
+[//]: # "### Factory"
+[//]: #
+[//]: # "![Factory](./assets/README-1712649520345.png)"
+[//]: #
+[//]: # "#### BeanFactory"
+[//]: #
+[//]: # "`BeanFactory` is a root interface to access bean container. It is implemented by objects which hold a number of `beanDefinition`."
+[//]: #
+[//]: # "`beanDefinition` contains all the information that create a bean needed. Such as the type of bean (Singleton or independent) // FIX ME"
+[//]: #
+[//]: # "```java"
+[//]: # "// get bean"
+[//]: # "Object getBean(String name) throws BeansException;"
+[//]: # "```"
+[//]: #
+[//]: # "#### AbstractBeanFactory"
+[//]: # "I implement `BeanFactory` by `AbstractBeanFactory`, which also extends the `DefaultSingletonBeanRegister`,indicates "
+[//]: # "that this has a singleton cache to provide shared instance. "
+[//]: #
+[//]: # "This is a base factory class implemented by beanFactory implementations that can obtain bean definition from some resources."
+[//]: #
+[//]: # "#### AbstractAutowiredCapableBeanFactory"
+[//]: # "Implement the AbstractBeanFactory."
+[//]: # "- It can create a bean from bean definition (involves creation, populating properties, and initialization)"
+[//]: # "- It can also resolve bean reference"
+[//]: #
+[//]: # "#### BeanDefinitionRegistry "
+[//]: #
+[//]: # "Interface implemented by objects which can register bean definition. "
+[//]: #
+[//]: # "#### DefaultListableFactory"
+[//]: #
+[//]: # "This factory is responsible for registering bean definition and create bean from bean definition."
+[//]: #
 
 ![](./assets/README-1713152994708.png)
 
 ### BeanFactory
+
 A bean container
 
 ### ListableBeanFactory
+
 extension able to enumerate all defined beans
+
 ```java
 public interface ListableBeanFactory extends BeanFactory {
     <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException;
@@ -74,12 +56,15 @@ public interface ListableBeanFactory extends BeanFactory {
     String[] getBeanDefinitionNames();
 }
 ```
+
 ### AutowireCapableBeanFactory
+
 extension able to autowire
 
 also capable of applying bean postProcessor
 
 ### ConfigurableBeanFactory
+
 Provides facilities to configure a bean factory
 
 ```java
@@ -95,19 +80,24 @@ In addition to ConfigurableBeanFactory, it provides facilities to analyze and mo
 ```java
     void preInstantiateSingletons() throws BeansException;
 ```
+
 ### SingletonRegistry and Default SingletonRegistry
+
 Interface: define a registry for shared beans
 
 ### AbstractBeanFactory
 
-base class for BeanFactory implementation, 
+base class for BeanFactory implementation,
 implements the `getBean` method
 
 ### AbstractAutowireCapableBeanFactory
+
 implement the `createBean` method, using simple instantiation strategy default.
 
 ### BeanDefinitionRegistry
+
 provide facilities to register bd.
+
 ```java
     void registerBeanDefinition(String beanName, BeanDefinition beanDefinition);
 
@@ -134,12 +124,11 @@ the most difference between BeanFactory and ApplicationContext is:
 - Automatic BeanPostProcessor registration
 - Automatic BeanFactoryPostProcessor registration
 
-[//]: # (- Convenient MessageSource access &#40;for i18n&#41;)
-
-[//]: # (- ApplicationEvent publication)
-
+[//]: # "- Convenient MessageSource access (for i18n)"
+[//]: # "- ApplicationEvent publication"
 
 ### ConfigurableApplicationContext
+
 the SPI interface to be implemented by most if not all application contexts.
 
 one of the implementations of **refresh**:
@@ -162,11 +151,52 @@ one of the implementations of **refresh**:
         beanFactory.preInstantiateSingletons();
     }
 ```
+
 you can see that refresh method can create (or refresh) a beanFactory. And automatically invoke the BeanFactoryPostProcessors and register the bean processors.
 
 ### AbstractApplicationContext
+
 Base class for ApplicationContext implementations.
 Subclass need to implement the refreshBeanFactory() and getBeanFactory() methods.
 
 ### Aware interface
+
+```java
+/**
+ * Marker superinterface indicating that a bean is eligible to be notified
+ * by the Spring container of a particular framework object through a callback-style method.
+ *
+ * call back style method: like setBeanFactory(BeanFactory beanFactory), will be call by Spring Container
+ * rather than the bean itself.
+ */
+public interface Aware {
+
+}
+```
+
+We have two Aware interfaces:
+
+- BeanFactoryAware
+
+  - call back method: setBeanFactory(BeanFactory beanFactory)
+  - timing: during the bean creatation
+
+  ```java
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+
+        // automatically inject BeanFactory if the bean implements BeanFactoryAware
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
+    }
+  ```
+
+- ApplicationContextAware
+  - call back method: setApplicationContext(ApplicationContext applicationContext)
+  - timing: inject the ApplicationContext before the bean initialization by **beanPostProcessor**.
+  ```java
+  // Add a bean post-processor that can inject the ApplicationContext
+  // into applicationContextAware beans.
+  beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+  ```
 
