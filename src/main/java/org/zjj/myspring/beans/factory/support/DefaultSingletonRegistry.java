@@ -22,7 +22,8 @@ public class DefaultSingletonRegistry implements SingletonRegistry {
     }
 
     /** this method is intended to be used by developer */
-    protected void addSingleton(String beanName, Object singletonObject) {
+    @Override
+    public void addSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
     }
 

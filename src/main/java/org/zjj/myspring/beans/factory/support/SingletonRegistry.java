@@ -7,4 +7,6 @@ package org.zjj.myspring.beans.factory.support;
  */
 public interface SingletonRegistry {
     Object getSingleton(String beanName);
+
+    void addSingleton(String beanName, Object singletonObject);
 }
