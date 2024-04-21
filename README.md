@@ -212,3 +212,44 @@ Only singleton beans need to be registered for destruction, this is beacause tha
 - In contrast to the other scopes, Spring does not manage the complete lifecycle of a prototype bean.
 - The client code must clean up prototype-scoped objects and release
   expensive resources that the prototype bean(s) are holding.
+
+### FactoryBean
+
+FactoryBean is a special bean that can be used to define the factory method for creating a bean.
+
+Instead of registering the bean itself, you register the FactoryBean like this:
+
+```xml
+<beans>
+  <bean class="org.zjj.myspring.ioc.common.CarFactoryBean" id="car">
+    <property name="brand" value="porsche"></property>
+  </bean>
+</beans>
+```
+
+Then when we get the bean from the container, we will get the object created by the FactoryBean.
+
+```java
+if (beanInstance instanceof FactoryBean) {
+    FactoryBean<?> factoryBean = (FactoryBean<?>) beanInstance;
+    try {
+        if (factoryBean.isSingleton()) {
+            object = factoryBeanObjectCache.get(name);
+            if (object == null) {
+                object = factoryBean.getObject();
+                factoryBeanObjectCache.put(name, object);
+            }
+        } else {
+            object = factoryBean.getObject();
+        }
+    } catch (Exception e) {
+        throw new BeansException("FactoryBean threw exception on object creation", e);
+    }
+}
+return object;
+```
+
+There are two ways to get the object from the FactoryBean:
+
+- If the bean is singleton, we will cache the object.
+- If the bean is prototype, we will create a new object every time.

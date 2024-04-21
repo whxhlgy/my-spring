@@ -47,7 +47,6 @@ public class BeanDefinition {
         setPrototype(SCOPE_PROTOTYPE.equals(scope));
     }
 
-
     public void addPropertyValue(String name, Object value) {
         propertyValues.addPropertyValue(new PropertyValue(name, value));
     }
