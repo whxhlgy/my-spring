@@ -367,3 +367,56 @@ MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceIntercep
 ```
 
 This interceptor will be called if the pointcut matches.
+
+It is important to note that the interceptor is also a Advice.
+When the jointPoint is reached, the interceptor will be called:
+
+```java
+return methodInterceptor
+            .invoke(/*...*/)
+```
+
+Simple advice like:
+
+```java
+public class WorldServiceInterceptor implements MethodInterceptor {
+
+    @Override
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        System.out.println("WorldServiceInterceptor: before");
+        Object result = invocation.proceed();
+        System.out.println("WorldServiceInterceptor: after");
+        return result;
+    }
+
+}
+```
+
+We can also have a more complex advice like MethodBeforeAdvice:
+
+```java
+public class WorldServiceBeforeAdvice implements MethodBeforeAdvice {
+    @Override
+    public void before(Method method, Object[] args, Object target) throws Throwable {
+        System.out.println("WorldServiceBeforeAdvice: do something");
+    }
+}
+WorldServiceBeforeAdvice beforeAdvice = new WorldServiceBeforeAdvice();
+MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
+```
+
+This in fact is a advice in another advice. We wrapped beforeAdvice in BeforeAdviceInterceptor.
+
+### Advisor
+
+With Advisor, we can combine the pointcut and advice together.
+
+```java
+AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+advisor.setExpression(expression);
+MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
+advisor.setAdvice(methodInterceptor);
+```
+
+next time, we can get the interceptor by directly called `(MethodInterceptor)advisor.getAdvice()`
+This can be a simple interceptor or a complex interceptor contains multiple advice.

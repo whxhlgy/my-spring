@@ -1,9 +1,11 @@
 package org.zjj.myspring.aop;
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.junit.Before;
 import org.junit.Test;
 import org.zjj.myspring.aop.framework.adapter.MethodBeforeAdviceInterceptor;
 import org.zjj.myspring.aop.aspect.AspectJExpressionPointcut;
+import org.zjj.myspring.aop.aspect.AspectJExpressionPointcutAdvisor;
 import org.zjj.myspring.common.WorldServiceBeforeAdvice;
 import org.zjj.myspring.common.WorldServiceInterceptor;
 import org.zjj.myspring.service.WorldService;
@@ -79,6 +81,7 @@ public class DynamicProxyTest {
             AdvisedSupport advisedSupport = new AdvisedSupport();
             TargetSource targetSource = new TargetSource(worldService);
             advisedSupport.setTargetSource(targetSource);
+            // TODO:
             advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
             advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
 //			advisedSupport.setProxyTargetClass(true);   //JDK or CGLIB
