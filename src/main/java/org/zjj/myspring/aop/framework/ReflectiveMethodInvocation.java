@@ -7,14 +7,17 @@ import org.aopalliance.intercept.MethodInvocation;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Description of a method invocation, including a target object and a method to invoke.
+ */
 @RequiredArgsConstructor
-public class ReflectionMethodInvocation implements MethodInvocation {
+public class ReflectiveMethodInvocation implements MethodInvocation {
 
-    private final Object target;
+    protected final Object target;
 
-    private final Method method;
+    protected final Method method;
 
-    private final Object[] arguments;
+    protected final Object[] arguments;
 
     @Override
     public Object[] getArguments() {

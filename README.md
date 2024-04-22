@@ -121,6 +121,7 @@ the most difference between BeanFactory and ApplicationContext is:
 **Application Context**
 
 - Bean instantiation/wiring
+- Load external configuration files like xml-based configuration
 - Automatic BeanPostProcessor registration
 - Automatic BeanFactoryPostProcessor registration
 
@@ -307,3 +308,17 @@ if (advisedSupport.getMethodMatcher().matches(method, advisedSupport.getTargetSo
     // aop alliance method interceptor invoke
 }
 ```
+
+### Cglib Dynamic proxy
+
+JDK Dynamic proxy can only proxy by interface
+(so your target class needs to implement an interface, which is then also implemented by the proxy class).
+
+CGLIB (and javassist) can create a proxy by subclassing.
+In this scenario the proxy becomes a subclass of the target class. No need for interfaces.
+
+CGLIB using a bytecode generation library to generate a subclass of the target class.
+JdkDynamicAopProxy using Java reflection to create a proxy. Specifically, using a ClassLoader's defineClass() method to create a new class.
+
+When using cglib, we need define a DynamicAdvisedInterceptor to intercept the method. This interceptor is not the same as the one intercept
+aop alliance method interceptor. It is like a InvocationHandler in JDK Dynamic Proxy.
