@@ -1,4 +1,4 @@
-package org.zjj.myspring.ioc.bean;
+package org.zjj.myspring.bean;
 
 import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.factory.DisposableBean;

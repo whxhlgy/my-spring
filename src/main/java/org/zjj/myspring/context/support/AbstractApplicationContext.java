@@ -66,6 +66,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
         // Initialize the Multicaster for event publishing.
         initApplicationEventMulticaster();
 
+        // Register listeners to receive events.
         registerListeners();
 
         // pre instantiate singletons

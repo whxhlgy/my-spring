@@ -1,4 +1,4 @@
-package org.zjj.myspring.ioc.common;
+package org.zjj.myspring.common;
 
 import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.PropertyValue;

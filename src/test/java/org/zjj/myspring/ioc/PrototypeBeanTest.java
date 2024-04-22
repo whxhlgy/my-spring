@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.zjj.myspring.context.support.ClassPathXmlApplicationContext;
-import org.zjj.myspring.ioc.bean.Car;
+import org.zjj.myspring.bean.Car;
 
 public class PrototypeBeanTest {
     @Test

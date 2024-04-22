@@ -1,4 +1,4 @@
-package org.zjj.myspring.ioc.common.event;
+package org.zjj.myspring.common.event;
 
 import org.zjj.myspring.context.ApplicationEvent;
 

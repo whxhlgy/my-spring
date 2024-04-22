@@ -2,8 +2,8 @@ package org.zjj.myspring.ioc;
 
 import org.junit.Test;
 import org.zjj.myspring.beans.factory.support.DefaultListableBeanFactory;
+import org.zjj.myspring.service.HelloService;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
-import org.zjj.myspring.ioc.bean.HelloService;
 
 /**
  * @author zhongjunjie on 2024/4/7

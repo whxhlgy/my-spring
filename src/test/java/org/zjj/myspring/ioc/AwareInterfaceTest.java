@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.zjj.myspring.context.support.ClassPathXmlApplicationContext;
-import org.zjj.myspring.ioc.bean.HelloService;
+import org.zjj.myspring.service.HelloService;
 
 public class AwareInterfaceTest {
     @Test

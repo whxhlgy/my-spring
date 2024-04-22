@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.zjj.myspring.beans.factory.support.DefaultListableBeanFactory;
 import org.zjj.myspring.beans.factory.xml.XmlBeanDefinitionReader;
-import org.zjj.myspring.ioc.bean.Car;
-import org.zjj.myspring.ioc.bean.Person;
-import org.zjj.myspring.ioc.common.CustomBeanFactoryPostProcessor;
-import org.zjj.myspring.ioc.common.CustomBeanPostProcessor;
+import org.zjj.myspring.bean.Car;
+import org.zjj.myspring.bean.Person;
+import org.zjj.myspring.common.CustomBeanFactoryPostProcessor;
+import org.zjj.myspring.common.CustomBeanPostProcessor;
 
 public class BeanFactoryPostProcessorAndBeanPostProcessorTest {
 

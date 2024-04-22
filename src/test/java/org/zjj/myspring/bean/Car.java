@@ -1,4 +1,4 @@
-package org.zjj.myspring.ioc.bean;
+package org.zjj.myspring.bean;
 
 import lombok.Data;
 

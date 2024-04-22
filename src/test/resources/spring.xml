@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance           http://www.springframework.org/schema/beans/spring-beans.xsd">
-  <bean class="org.zjj.myspring.ioc.bean.Person" id="person">
+  <bean class="org.zjj.myspring.bean.Person" id="person">
     <property name="name" value="derek"></property>
     <property name="car" ref="car"></property>
   </bean>
-  <bean class="org.zjj.myspring.ioc.bean.Car" id="car">
+  <bean class="org.zjj.myspring.bean.Car" id="car">
     <property name="brand" value="porsche"></property>
   </bean>
-  <bean class="org.zjj.myspring.ioc.common.CustomBeanPostProcessor" id="customBeanPostProcessor"></bean>
-  <bean class="org.zjj.myspring.ioc.common.CustomBeanFactoryPostProcessor" id="customBeanFactoryPostProcessor"></bean>
-  <bean class="org.zjj.myspring.ioc.bean.HelloService" id="helloService"></bean>
+  <bean class="org.zjj.myspring.common.CustomBeanPostProcessor" id="customBeanPostProcessor"></bean>
+  <bean class="org.zjj.myspring.common.CustomBeanFactoryPostProcessor" id="customBeanFactoryPostProcessor"></bean>
+  <bean class="org.zjj.myspring.service.HelloService" id="helloService"></bean>
 </beans>

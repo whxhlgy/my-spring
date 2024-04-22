@@ -253,3 +253,31 @@ There are two ways to get the object from the FactoryBean:
 
 - If the bean is singleton, we will cache the object.
 - If the bean is prototype, we will create a new object every time.
+
+### Event and EventListener
+
+To achieve that, we need:
+
+1. applicationEventMulticaster
+
+used to manage the EventListener and publish event on these listener, this will be initialized among the application refreshing.
+
+2. EventListener beans
+
+You can register eventlistener as beans.
+
+## AOP
+
+### Pointcut Expresion
+
+define the pointcut expression to match the target method.
+
+```java
+AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* org.zjj.myspring.aop.service.*.*(..))");
+
+// check if the class or method matches the pointcut
+assertThat(pointcut.matches(clazz)).isTrue();
+assertThat(pointcut.matches(method, clazz)).isTrue();
+```
+
+### JDK Dynamic Proxy

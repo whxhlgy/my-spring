@@ -6,8 +6,8 @@ import org.zjj.myspring.beans.PropertyValues;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.support.DefaultListableBeanFactory;
 import org.zjj.myspring.beans.factory.BeanReference;
-import org.zjj.myspring.ioc.bean.Car;
-import org.zjj.myspring.ioc.bean.Person;
+import org.zjj.myspring.bean.Car;
+import org.zjj.myspring.bean.Person;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

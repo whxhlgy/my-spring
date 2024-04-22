@@ -1,8 +1,8 @@
-package org.zjj.myspring.ioc.common;
+package org.zjj.myspring.common;
 
 import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
-import org.zjj.myspring.ioc.bean.Car;
+import org.zjj.myspring.bean.Car;
 
 public class CustomBeanPostProcessor implements BeanPostProcessor {
 

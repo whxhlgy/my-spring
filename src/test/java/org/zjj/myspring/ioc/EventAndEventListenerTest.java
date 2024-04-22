@@ -2,7 +2,7 @@ package org.zjj.myspring.ioc;
 
 import org.junit.Test;
 import org.zjj.myspring.context.support.ClassPathXmlApplicationContext;
-import org.zjj.myspring.ioc.common.event.CustomEvent;
+import org.zjj.myspring.common.event.CustomEvent;
 
 public class EventAndEventListenerTest {
     @Test

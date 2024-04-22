@@ -1,7 +1,7 @@
-package org.zjj.myspring.ioc.common;
+package org.zjj.myspring.common;
 
 import org.zjj.myspring.beans.factory.FactoryBean;
-import org.zjj.myspring.ioc.bean.Car;
+import org.zjj.myspring.bean.Car;
 
 public class CarFactoryBean implements FactoryBean<Car> {
     private String brand;
