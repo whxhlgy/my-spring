@@ -8,6 +8,7 @@ import org.zjj.myspring.service.WorldService;
 import org.zjj.myspring.service.WorldServiceImpl;
 import org.zjj.myspring.aop.framework.CglibAopProxy;
 import org.zjj.myspring.aop.framework.JdkDynamicAopProxy;
+import org.zjj.myspring.aop.framework.ProxyFactory;
 
 public class DynamicProxyTest {
 
@@ -35,6 +36,19 @@ public class DynamicProxyTest {
     @Test
     public void testCglibDynamicProxy() throws Exception {
         WorldService proxy = (WorldService) new CglibAopProxy(advisedSupport).getProxy();
+        proxy.explode();
+    }
+
+    @Test
+    public void testProxyFactory() throws Exception {
+        // use JDK dynamic proxy
+        advisedSupport.setProxyTargetClass(false);
+        WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+        proxy.explode();
+
+        // use CGLIB proxy
+        advisedSupport.setProxyTargetClass(true);
+        proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
         proxy.explode();
     }
 }

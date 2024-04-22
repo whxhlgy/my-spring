@@ -7,9 +7,13 @@ import lombok.Data;
 @Data
 public class AdvisedSupport {
 
+    // Whether use the CGLIB proxy
+    private boolean proxyTargetClass = false;
+
     private TargetSource targetSource;
 
     private MethodInterceptor methodInterceptor;
 
     private MethodMatcher methodMatcher;
+
 }

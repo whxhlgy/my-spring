@@ -322,3 +322,20 @@ JdkDynamicAopProxy using Java reflection to create a proxy. Specifically, using 
 
 When using cglib, we need define a DynamicAdvisedInterceptor to intercept the method. This interceptor is not the same as the one intercept
 aop alliance method interceptor. It is like a InvocationHandler in JDK Dynamic Proxy.
+
+### ProxyFactory
+
+proxyFactory provide a simple way to obtain proxy object.
+
+rather than using
+
+```java
+WorldService proxy = (WorldService) new CglibAopProxy(advisedSupport).getProxy();
+```
+
+we can use:
+
+```java
+advisedSupport.setProxyTargetClass(true);
+proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+```
