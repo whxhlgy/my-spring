@@ -339,3 +339,31 @@ we can use:
 advisedSupport.setProxyTargetClass(true);
 proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
 ```
+
+### Before Advice
+
+This is similar to WorldServiceInterceptor class.
+
+We first define a class implements MethodBeforeAdvice:
+
+The before method just a callBack method, which will be called before the target method.
+
+```java
+public class WorldServiceBeforeAdvice implements MethodBeforeAdvice {
+
+    @Override
+    public void before(Method method, Object[] args, Object target) throws Throwable {
+        System.out.println("WorldServiceBeforeAdvice: do something");
+    }
+
+}
+```
+
+Than we register this advice into the MethodBeforeAdviceInterceptor:
+
+```java
+WorldServiceBeforeAdvice beforeAdvice = new WorldServiceBeforeAdvice();
+MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(beforeAdvice);
+```
+
+This interceptor will be called if the pointcut matches.
