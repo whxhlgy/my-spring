@@ -281,3 +281,29 @@ assertThat(pointcut.matches(method, clazz)).isTrue();
 ```
 
 ### JDK Dynamic Proxy
+
+use JDK Dynamic Proxy to achieve AOP.
+
+```java
+@Override
+public Object getProxy() {
+    return Proxy.newProxyInstance(
+        getClass().getClassLoader(),
+        advisedSupport.getTargetSource().getTargetClass(),
+        this
+    );
+}
+// invoke method on proxy object
+WorldService proxy = (WorldService) new JdkDynamicAopProxy(advisedSupport).getProxy();
+proxy.explode();
+```
+
+After the proxy object is created, we can invoke the method on the proxy object.
+
+Then the `invoke` method will be called, and we check if the method matches the pointcut.
+
+```java
+if (advisedSupport.getMethodMatcher().matches(method, advisedSupport.getTargetSource().getTargetClass().getClass())){
+    // aop alliance method interceptor invoke
+}
+```
