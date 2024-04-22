@@ -3,6 +3,7 @@ package org.zjj.myspring.beans.factory.support;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.Getter;
 
 import java.lang.reflect.Method;
 
@@ -15,6 +16,7 @@ import org.zjj.myspring.beans.factory.InitializingBean;
 import org.zjj.myspring.beans.factory.config.AutowireCapableBeanFactory;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
+import org.zjj.myspring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 /**
  * This factory is responsible for creating bean instances.
@@ -24,12 +26,47 @@ import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
     implements AutowireCapableBeanFactory {
 
+    @Getter
     private final InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
 
     // create bean from beanDefinition
     @Override
     protected Object createBean(String beanName, BeanDefinition beanDefinition) {
+        // give BeanPostProcessors a chance to return a proxy instead of the target bean instance
+        Object bean = resolveBeforeInstantiation(beanName, beanDefinition);
+        if (bean != null) {
+            return bean;
+        }
         return doCreateBean(beanName, beanDefinition);
+    }
+
+    /**
+     * Apply before-instantiation post-processors, resolving whether there is a
+     * before-instantiation shortcut for the specified bean.
+     *
+     * @param beanName
+     * @param beanDefinition
+     * @return
+     */
+    private Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorsBeforeInstantiation(beanDefinition.getBeanClass(), beanName);
+        if (bean != null) {
+            return applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
+    }
+
+    private Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                Object result = ((InstantiationAwareBeanPostProcessor) processor)
+                                .postProcessBeforeInstantiation(beanClass, beanName);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
     private Object doCreateBean(String beanName, BeanDefinition beanDefinition) {

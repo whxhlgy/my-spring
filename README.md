@@ -420,3 +420,52 @@ advisor.setAdvice(methodInterceptor);
 
 next time, we can get the interceptor by directly called `(MethodInterceptor)advisor.getAdvice()`
 This can be a simple interceptor or a complex interceptor contains multiple advice.
+
+### Auto-proxy
+
+Even we have advisor, we still need to create proxy object manually.
+like this:
+
+```java
+AdvisedSupport advisedSupport = new AdvisedSupport();
+TargetSource targetSource = new TargetSource(worldService);
+advisedSupport.setTargetSource(targetSource);
+advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
+advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
+//advisedSupport.setProxyTargetClass(true);   //JDK or CGLIB
+WorldService proxy = (WorldService) new ProxyFactory(advisedSupport).getProxy();
+```
+
+But we can do this automatically by using BeanPostProcessor.
+
+So we can create a BeanPostProcessor to create proxy object automatically.
+
+```java
+public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {}
+
+// implementation
+public class DefaultAdvisorAutoProxyCreator implements
+    InstantiationAwareBeanPostProcessor,
+    BeanFactoryAware {}
+```
+
+This bean will be applied before bean creation(it is a special postProcessor, will may be cause a short-cut during bean creation),
+and it will create a proxy object if the bean matches the pointcut:
+
+```java
+@Override
+protected Object createBean(String beanName, BeanDefinition beanDefinition) {
+    // give BeanPostProcessors a chance to return a proxy instead of the target bean instance
+    Object bean = resolveBeforeInstantiation(beanName, beanDefinition);
+    if (bean != null) {
+        return bean;
+    }
+    return doCreateBean(beanName, beanDefinition);
+}
+```
+
+After that, we can get the proxy object automatically as long as we define the postProcessor in the bean container.
+
+```xml
+<bean class="org.zjj.myspring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
+```

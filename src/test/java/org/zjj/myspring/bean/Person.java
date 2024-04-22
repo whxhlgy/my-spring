@@ -10,7 +10,7 @@ import lombok.Data;
  * @author zhongjunjie on 2024/4/8
  */
 @Data
-public class Person implements InitializingBean, DisposableBean {
+public class Person implements InitializingBean, DisposableBean, Foo {
     private String name;
     private int age;
     private Car car;

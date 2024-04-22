@@ -70,7 +70,7 @@ public class DynamicProxyTest {
         WorldService worldService = new WorldServiceImpl();
 
         //Advisor是Pointcut和Advice的组合
-        String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
+        String expression = "execution(* org.zjj.myspring.service.WorldService.explode(..))";
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
         advisor.setExpression(expression);
         MethodBeforeAdviceInterceptor methodInterceptor = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
@@ -81,7 +81,6 @@ public class DynamicProxyTest {
             AdvisedSupport advisedSupport = new AdvisedSupport();
             TargetSource targetSource = new TargetSource(worldService);
             advisedSupport.setTargetSource(targetSource);
-            // TODO:
             advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
             advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
 //			advisedSupport.setProxyTargetClass(true);   //JDK or CGLIB
