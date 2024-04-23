@@ -38,7 +38,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             return bean;
         }
         return doCreateBean(beanName, beanDefinition);
-    }
+}
 
     /**
      * Apply before-instantiation post-processors, resolving whether there is a

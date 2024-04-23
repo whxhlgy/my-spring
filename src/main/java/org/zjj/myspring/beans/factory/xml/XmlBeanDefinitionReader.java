@@ -2,6 +2,7 @@ package org.zjj.myspring.beans.factory.xml;
 
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -13,6 +14,8 @@ import org.zjj.myspring.beans.factory.BeanReference;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.support.AbstractBeanDefinitionReader;
 import org.zjj.myspring.beans.factory.support.BeanDefinitionRegistry;
+import org.zjj.myspring.context.annotation.ClassPathBeanDefinitionScanner;
+import org.zjj.myspring.context.annotation.ClassPathScaningCandidateComponentProvider;
 import org.zjj.myspring.core.io.Resource;
 import org.zjj.myspring.core.io.ResourceLoader;
 
@@ -23,6 +26,8 @@ import cn.hutool.core.util.StrUtil;
  */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
+    private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
+    private static final String COMPONENT_SCAN_ELEMENT = "component-scan";
     public static final String DESTORY_METHOD_ATTRIBUTE = "destroy-method";
     public static final String INIT_METHOD_ATTRIBUTE = "init-method";
     public static final String BEAN_ELEMENT = "bean";
@@ -62,6 +67,17 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         SAXReader reader = new SAXReader();
         Document document = reader.read(inputStream);
         Element root = document.getRootElement();
+
+        // resolve tag <context:component-scan>
+        Element scan = root.element(COMPONENT_SCAN_ELEMENT);
+        if (scan != null) {
+            String basePath = scan.attributeValue(BASE_PACKAGE_ATTRIBUTE);
+            if (basePath == null) {
+                throw new BeansException("The base-package attribute is required");
+            }
+            scanPackge(basePath);
+        }
+
         for (Iterator<Element> it = root.elementIterator(BEAN_ELEMENT); it.hasNext(); ) {
             Element next = it.next();
             String id = next.attributeValue(ID_ATTRIBUTE);
@@ -114,68 +130,14 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             }
             getRegistry().registerBeanDefinition(beanName, beanDefinition);
         }
-
-
-        // Element root = document.getDocumentElement();
-        // NodeList childNodes = root.getChildNodes();
-        // for (int i = 0; i < childNodes.getLength(); i++) {
-        //     if (childNodes.item(i) instanceof Element) {
-        //         if (BEAN_ELEMENT.equals(((Element) childNodes.item(i)).getNodeName())) {
-        //             Element bean = (Element) childNodes.item(i);
-        //             String id = bean.getAttribute(ID_ATTRIBUTE);
-        //             String name = bean.getAttribute(NAME_ATTRIBUTE);
-        //             String className = bean.getAttribute(CLASS_ATTRIBUTE);
-        //             String initMethodName = bean.getAttribute(INIT_METHOD_ATTRIBUTE);
-        //             String destoryMethodName = bean.getAttribute(DESTORY_METHOD_ATTRIBUTE);
-        //             Class<?> clazz = null;
-        //
-        //             try {
-        //                 clazz = Class.forName(className);
-        //             } catch (ClassNotFoundException e) {
-        //                 throw new BeansException("Cannot load class " + className, e);
-        //             }
-        //
-        //             // use id take precedence over name
-        //             String beanName = StrUtil.isNotEmpty(id) ? id : name;
-        //             if (StrUtil.isEmpty(beanName)) {
-        //                 // if id and name are both emptye
-        //                 beanName = StrUtil.lowerFirst(clazz.getSimpleName());
-        //             }
-        //             BeanDefinition beanDefinition = new BeanDefinition(clazz);
-        //             beanDefinition.setInitMethodName(initMethodName);
-        //             beanDefinition.setDestroyMethodName(destoryMethodName);
-        //
-        //             for (int j = 0; j < bean.getChildNodes().getLength(); j++) {
-        //                 if (bean.getChildNodes().item(j) instanceof Element)  {
-        //                     Element property = (Element) bean.getChildNodes().item(j);
-        //                     String nameAttribute = property.getAttribute(NAME_ATTRIBUTE);
-        //                     String valueAttribute = property.getAttribute(VALUE_ATTRIBUTE);
-        //                     String refAttribute = property.getAttribute(REF_ATTRIBUTE);
-        //
-        //                     if (StrUtil.isEmpty(nameAttribute)) {
-        //                         throw new BeansException("The name attribute is required");
-        //                     }
-        //
-        //                     Object value = valueAttribute;
-        //                     if (StrUtil.isNotEmpty(refAttribute)) {
-        //                         value = new BeanReference(refAttribute);
-        //                     }
-        //                     PropertyValue propertyValue = new PropertyValue(nameAttribute, value);
-        //                     beanDefinition.getPropertyValues().addPropertyValue(propertyValue);
-        //                 }
-        //             }
-        //
-        //             if (this.getRegistry().containsBeanDefinition(beanName)) {
-        //                 // beanName cannot be duplicated
-        //                 throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");
-        //             }
-        //
-        //             getRegistry().registerBeanDefinition(beanName, beanDefinition);
-        //         }
-        //     }
-        // }
     }
 
+
+    private void scanPackge(String basePath) {
+        String[] basePackages = StrUtil.splitToArray(basePath, ",");
+        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(getRegistry());
+        scanner.doScan(basePackages);
+    }
 
     @Override
     public void loadBeanDefinitions(String location) throws BeansException {

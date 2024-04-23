@@ -473,3 +473,15 @@ After that, we can get the proxy object automatically as long as we define the p
 ### Placeholder configurer
 
 Placeholder configurer is a special BeanFactoryPostProcessor, which will replace the placeholder in the bean definition.
+
+### Package Scan Support
+
+We can use the package scan to scan the bean definition.
+
+This is pretty simple, we just define a component-scan tag in the xml file.
+
+```java
+  <context:component-scan base-package="org.zjj.myspring.bean"></context:component-scan>
+```
+
+Every time xml reader reach the component-scan tag, it will create a ClassPathBeanDefinitionScanner to scan the package.
