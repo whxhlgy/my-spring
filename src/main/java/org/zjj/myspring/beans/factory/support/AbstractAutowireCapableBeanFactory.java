@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 
 import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.PropertyValue;
+import org.zjj.myspring.beans.PropertyValues;
 import org.zjj.myspring.beans.factory.BeanFactoryAware;
 import org.zjj.myspring.beans.factory.BeanReference;
 import org.zjj.myspring.beans.factory.DisposableBean;
@@ -38,7 +39,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             return bean;
         }
         return doCreateBean(beanName, beanDefinition);
-}
+    }
 
     /**
      * Apply before-instantiation post-processors, resolving whether there is a
@@ -74,6 +75,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
         try {
             bean = createBeanInstance(beanDefinition);
+            // Before setting properties, allow post-processors to modify the bean instance.
+            applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
             // populate bean with property values
             applyPropertyValues(beanName, bean, beanDefinition);
             // extension point: allow post-process bean before initialization
@@ -87,6 +90,22 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             addSingleton(beanName, bean);
         }
         return bean;
+    }
+
+    private void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean,
+            BeanDefinition beanDefinition) {
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                PropertyValues pValues = ((InstantiationAwareBeanPostProcessor) processor)
+                                         .postProcessPropertyValues(beanDefinition.getPropertyValues(), bean, beanName);
+                if (pValues == null) {
+                    continue;
+                }
+                for (PropertyValue val : pValues.getPropertyValues()) {
+                    beanDefinition.getPropertyValues().addPropertyValue(val);
+                }
+            }
+        }
     }
 
     private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {

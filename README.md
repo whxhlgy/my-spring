@@ -485,3 +485,17 @@ This is pretty simple, we just define a component-scan tag in the xml file.
 ```
 
 Every time xml reader reach the component-scan tag, it will create a ClassPathBeanDefinitionScanner to scan the package.
+
+### @Value and @Autowired
+
+@Value is a special annotation to inject the value(can have a placeholder).
+
+We achieve this by defining a BeanPostProcessor to inject the value.
+This is a InstantiationAwareBeanPostProcessor, which will be called before the bean apply the properties.
+
+```java
+public class AutowiredAnnotationBeanPostProcessor implements
+    InstantiationAwareBeanPostProcessor, BeanFactoryAware {
+```
+
+Similar to process of @Component, we check every field of a bean, if the field is annotated with @Value, we inject the value.

@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ClassPathBeanDefinitionScanner extends ClassPathScaningCandidateComponentProvider {
 
+    private static final String AUTOWIRED_ANNOTATION_BEAN_POST_PROCESSOR_NAME = "autowiredAnnotationBeanPostProcessor";
     private BeanDefinitionRegistry registry;
 
     public void doScan(String ...basePackages) {
@@ -32,6 +33,12 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScaningCandidateCom
                 registry.registerBeanDefinition(beanName, bd);
             }
         }
+
+        // register the BeanPostProcessor for processing @Autowired and @Value
+        registry.registerBeanDefinition(
+                    AUTOWIRED_ANNOTATION_BEAN_POST_PROCESSOR_NAME,
+                    new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class
+                                      ));
     }
 
     private String resolveBeanScope(BeanDefinition bd) {

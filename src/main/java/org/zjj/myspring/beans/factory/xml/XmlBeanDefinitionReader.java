@@ -75,7 +75,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             if (basePath == null) {
                 throw new BeansException("The base-package attribute is required");
             }
-            scanPackge(basePath);
+            scanPackage(basePath);
         }
 
         for (Iterator<Element> it = root.elementIterator(BEAN_ELEMENT); it.hasNext(); ) {
@@ -133,7 +133,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
 
-    private void scanPackge(String basePath) {
+    private void scanPackage(String basePath) {
         String[] basePackages = StrUtil.splitToArray(basePath, ",");
         ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(getRegistry());
         scanner.doScan(basePackages);

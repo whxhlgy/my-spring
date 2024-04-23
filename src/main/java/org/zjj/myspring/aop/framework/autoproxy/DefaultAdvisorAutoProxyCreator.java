@@ -12,6 +12,7 @@ import org.zjj.myspring.aop.TargetSource;
 import org.zjj.myspring.aop.aspect.AspectJExpressionPointcutAdvisor;
 import org.zjj.myspring.aop.framework.ProxyFactory;
 import org.zjj.myspring.beans.BeansException;
+import org.zjj.myspring.beans.PropertyValues;
 import org.zjj.myspring.beans.factory.BeanFactory;
 import org.zjj.myspring.beans.factory.BeanFactoryAware;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
@@ -75,6 +76,12 @@ public class DefaultAdvisorAutoProxyCreator implements
         return Advice.class.isAssignableFrom(beanClass) ||
                Pointcut.class.isAssignableFrom(beanClass) ||
                Advisor.class.isAssignableFrom(beanClass);
+    }
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pValues, Object bean2, String beanName)
+    throws BeansException {
+        // do nothing;
+        return pValues;
     }
 
 }

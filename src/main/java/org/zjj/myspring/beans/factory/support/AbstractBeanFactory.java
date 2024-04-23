@@ -10,6 +10,7 @@ import org.zjj.myspring.beans.factory.FactoryBean;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 import org.zjj.myspring.beans.factory.config.ConfigurableBeanFactory;
+import org.zjj.myspring.util.StringValueResolver;
 
 import lombok.Getter;
 
@@ -29,6 +30,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonRegistry
 
     // we need a new cache to store the factoryBean object to avoid name conflict
     private final Map<String, Object> factoryBeanObjectCache = new HashMap<>();
+
+    private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -77,6 +80,20 @@ public abstract class AbstractBeanFactory extends DefaultSingletonRegistry
     }
 
     protected abstract Object createBean(String beanName, BeanDefinition beanDefinition);
+
+    @Override
+    public void addEmbeddedValueResolver(StringValueResolver valueResolver) {
+        this.embeddedValueResolvers.add(valueResolver);
+    }
+
+    @Override
+    public String resolveEmbeddedValue(String value) {
+        String result = value;
+        for (StringValueResolver resolver : embeddedValueResolvers) {
+            result = resolver.resolveStringValue(result);
+        }
+        return result;
+    }
 
     protected abstract BeanDefinition getBeanDefinition(String beanName);
 }
