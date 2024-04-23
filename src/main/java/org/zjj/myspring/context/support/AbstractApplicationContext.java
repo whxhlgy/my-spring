@@ -46,6 +46,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
         return getBeanFactory().getBean(name);
     }
 
+    public <T> T getBean(Class<T> requiredType) throws BeansException {
+        return (T) getBeanFactory().getBean(requiredType);
+    }
+
     @Override
     public void refresh() throws BeansException {
         // Tell the subclass to refresh the internal bean factory.

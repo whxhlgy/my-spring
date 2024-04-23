@@ -499,3 +499,5 @@ public class AutowiredAnnotationBeanPostProcessor implements
 ```
 
 Similar to process of @Component, we check every field of a bean, if the field is annotated with @Value, we inject the value.
+
+@Autowired is a special annotation to inject the bean.

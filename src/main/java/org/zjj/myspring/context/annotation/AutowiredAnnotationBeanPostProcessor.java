@@ -7,7 +7,6 @@ import org.zjj.myspring.beans.PropertyValues;
 import org.zjj.myspring.beans.factory.BeanFactory;
 import org.zjj.myspring.beans.factory.BeanFactoryAware;
 import org.zjj.myspring.beans.factory.ConfigurableListableBeanFactory;
-import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
 import org.zjj.myspring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -38,6 +37,24 @@ public class AutowiredAnnotationBeanPostProcessor implements
         }
 
         // process @Autowired
+        for (Field field : fields) {
+            Autowired autowiredAnnotation = field.getAnnotation(Autowired.class);
+            if (autowiredAnnotation == null) {
+                continue;
+            }
+            // process @Qualifier
+            Class<?> type = field.getType();
+            Qualifier qualifierAnnotation = field.getAnnotation(Qualifier.class);
+            Object dependencyBean = null;
+            if (qualifierAnnotation != null) {
+                String value = qualifierAnnotation.value();
+                String dependencyBeanName = value;
+                dependencyBean = beanFactory.getBean(dependencyBeanName, type);
+            } else {
+                dependencyBean = beanFactory.getBean(type);
+            }
+            BeanUtil.setFieldValue(bean, field.getName(), dependencyBean);
+        }
         return pValues;
     }
 

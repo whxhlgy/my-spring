@@ -2,8 +2,6 @@ package org.zjj.myspring.beans.factory.xml;
 
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.List;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -15,7 +13,6 @@ import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.support.AbstractBeanDefinitionReader;
 import org.zjj.myspring.beans.factory.support.BeanDefinitionRegistry;
 import org.zjj.myspring.context.annotation.ClassPathBeanDefinitionScanner;
-import org.zjj.myspring.context.annotation.ClassPathScaningCandidateComponentProvider;
 import org.zjj.myspring.core.io.Resource;
 import org.zjj.myspring.core.io.ResourceLoader;
 

@@ -18,4 +18,6 @@ extends AutowireCapableBeanFactory, ConfigurableBeanFactory, ListableBeanFactory
      * @throws BeansException
      */
     void preInstantiateSingletons() throws BeansException;
+
+    Object getBean(Class<?> requiredType) throws BeansException;
 }

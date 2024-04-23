@@ -207,7 +207,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     /**
      * Create a bean instance, using an appropriate instantiation strategy: 1. Simple instantiation 2.
-     * Using Factory method // TODO
+     * Using Factory method
      */
     private Object createBeanInstance(BeanDefinition beanDefinition) {
         return instantiationStrategy.instantiate(beanDefinition);
