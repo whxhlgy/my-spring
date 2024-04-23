@@ -30,8 +30,8 @@ public class DefaultAdvisorAutoProxyCreator implements
         return bean;
     }
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
+    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+        return null;
     }
 
     @Override
@@ -40,7 +40,8 @@ public class DefaultAdvisorAutoProxyCreator implements
     }
 
     @Override
-    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        Class<? extends Object> beanClass = bean.getClass();
         if (isInfrastructureClass(beanClass)) {
             return null;
         }
@@ -53,8 +54,6 @@ public class DefaultAdvisorAutoProxyCreator implements
                 ClassFilter classFilter = advisor.getPointcut().getClassFilter();
                 if (classFilter.matches(beanClass)) {
                     AdvisedSupport advisedSupport = new AdvisedSupport();
-                    BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
-                    Object bean = beanFactory.getInstantiationStrategy().instantiate(beanDefinition);
                     advisedSupport.setMethodInterceptor((MethodInterceptor)advisor.getAdvice());
                     advisedSupport.setTargetSource(new TargetSource(bean));
                     advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
@@ -65,7 +64,7 @@ public class DefaultAdvisorAutoProxyCreator implements
         } catch (Exception e) {
             throw new BeansException("Failed to create proxy of :" + beanName, e);
         }
-        return null;
+        return bean;
     }
 
     /*
@@ -82,6 +81,10 @@ public class DefaultAdvisorAutoProxyCreator implements
     throws BeansException {
         // do nothing;
         return pValues;
+    }
+    @Override
+    public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        return true;
     }
 
 }

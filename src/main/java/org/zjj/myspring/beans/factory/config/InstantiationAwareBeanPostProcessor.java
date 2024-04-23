@@ -15,6 +15,15 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
     Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException;
 
     /**
+     * execute after instantiation, but before property population
+     * @param bean
+     * @param beanName
+     * @return if the bean population should be skipped
+     * @throws BeansException
+     */
+    boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException;
+
+    /**
      * post-process the given property values before the factory applies them to the given bean.
      *
      * @param bean

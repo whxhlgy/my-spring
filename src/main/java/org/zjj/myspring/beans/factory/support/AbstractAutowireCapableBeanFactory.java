@@ -75,6 +75,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
         try {
             bean = createBeanInstance(beanDefinition);
+            boolean continuePopulation = applyBeanPostProcessorsAfterInstantiation(bean, beanName);
             // Before setting properties, allow post-processors to modify the bean instance.
             applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
             // populate bean with property values
@@ -90,6 +91,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             addSingleton(beanName, bean);
         }
         return bean;
+    }
+
+    private boolean applyBeanPostProcessorsAfterInstantiation(Object bean, String beanName) {
+        for (BeanPostProcessor processor : getBeanPostProcessors()) {
+            if (processor instanceof InstantiationAwareBeanPostProcessor) {
+                boolean ctnu = ((InstantiationAwareBeanPostProcessor) processor)
+                               .postProcessAfterInstantiation(bean, beanName);
+                if (!ctnu) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean,
