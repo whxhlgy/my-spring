@@ -469,3 +469,7 @@ After that, we can get the proxy object automatically as long as we define the p
 ```xml
 <bean class="org.zjj.myspring.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 ```
+
+### Placeholder configurer
+
+Placeholder configurer is a special BeanFactoryPostProcessor, which will replace the placeholder in the bean definition.

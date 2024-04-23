@@ -23,4 +23,8 @@ public class PropertyValues {
         }
         valueList.add(v);
     }
+
+    public PropertyValue[] getPropertyValues() {
+        return valueList.toArray(new PropertyValue[0]);
+    }
 }

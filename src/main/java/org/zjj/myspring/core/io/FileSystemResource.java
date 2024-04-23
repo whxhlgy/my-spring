@@ -1,9 +1,12 @@
 package org.zjj.myspring.core.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import org.zjj.myspring.beans.BeansException;
 
 /**
  * Useful when you need to access files on the local file system or a network file
@@ -26,12 +29,12 @@ public class FileSystemResource implements Resource {
     }
 
     @Override
-    public InputStream getInputStream() throws Exception {
+    public InputStream getInputStream() throws IOException {
         // the caller need to close the input stream
         try {
             return Files.newInputStream(filePath);
-        } catch (Exception e) {
-            throw new Exception("Could not open file [" + this.path + "]", e);
+        } catch (IOException e) {
+            throw new BeansException("Could not open file [" + this.path + "]", e);
         }
     }
 }
