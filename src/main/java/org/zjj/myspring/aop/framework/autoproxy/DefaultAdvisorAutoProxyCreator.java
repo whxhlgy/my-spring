@@ -1,6 +1,8 @@
 package org.zjj.myspring.aop.framework.autoproxy;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -15,7 +17,6 @@ import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.PropertyValues;
 import org.zjj.myspring.beans.factory.BeanFactory;
 import org.zjj.myspring.beans.factory.BeanFactoryAware;
-import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.zjj.myspring.beans.factory.support.DefaultListableBeanFactory;
 
@@ -25,9 +26,17 @@ public class DefaultAdvisorAutoProxyCreator implements
 
     private DefaultListableBeanFactory beanFactory;
 
+	/**
+	 * Keep track of early proxy references in order to avoid infinite loops.
+	 * 
+	 * "early" means that the target bean has not been fully initialized yet,
+	 * but we can return a wrapper (proxy) for it already.
+	 */
+    private Set<Object> earlyProxyReference = new HashSet<>();
+
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
+        return null;
     }
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
@@ -41,9 +50,29 @@ public class DefaultAdvisorAutoProxyCreator implements
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (!earlyProxyReference.contains(beanName)) {
+            return wrapIfNecessary(bean, beanName);
+        }
+        return bean;
+    }
+
+    @Override
+    public Object getEarlyBeanReference(Object bean, String beanName) throws BeansException {
+		// mark the bean indicate that this bean has been wrapped by a proxy, but is a early one
+        earlyProxyReference.add(beanName);
+        return wrapIfNecessary(bean, beanName);
+    }
+
+    /**
+     * Wrap the object as proxy if necessary
+     * @param bean
+     * @param beanName
+     * @return
+     */
+    private Object wrapIfNecessary(Object bean, String beanName) {
         Class<? extends Object> beanClass = bean.getClass();
         if (isInfrastructureClass(beanClass)) {
-            return null;
+            return bean;
         }
         Collection<AspectJExpressionPointcutAdvisor> values =
         beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class)
@@ -58,7 +87,9 @@ public class DefaultAdvisorAutoProxyCreator implements
                     advisedSupport.setTargetSource(new TargetSource(bean));
                     advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
 
-                    return new ProxyFactory(advisedSupport).getProxy();
+
+                    Object proxy = new ProxyFactory(advisedSupport).getProxy();
+                    return proxy;
                 }
             }
         } catch (Exception e) {

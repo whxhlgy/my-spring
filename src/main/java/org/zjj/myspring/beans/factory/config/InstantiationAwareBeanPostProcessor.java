@@ -33,4 +33,17 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
      * @throws BeansException
      */
     PropertyValues postProcessPropertyValues(PropertyValues pValues, Object bean2, String beanName) throws BeansException;
+
+    /**
+     * Obtain early access of a bean reference.
+     * It give a chance to obtain wrapper before the target bean instantiation.
+     *
+     * @param bean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
+    default Object getEarlyBeanReference(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
 }

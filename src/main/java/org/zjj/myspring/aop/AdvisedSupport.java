@@ -8,7 +8,7 @@ import lombok.Data;
 public class AdvisedSupport {
 
     // Whether use the CGLIB proxy
-    private boolean proxyTargetClass = false;
+    private boolean proxyTargetClass = true;
 
     private TargetSource targetSource;
 

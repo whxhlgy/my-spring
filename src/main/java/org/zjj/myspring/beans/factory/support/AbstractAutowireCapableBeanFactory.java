@@ -10,10 +10,7 @@ import java.lang.reflect.Method;
 import org.zjj.myspring.beans.BeansException;
 import org.zjj.myspring.beans.PropertyValue;
 import org.zjj.myspring.beans.PropertyValues;
-import org.zjj.myspring.beans.factory.BeanFactoryAware;
-import org.zjj.myspring.beans.factory.BeanReference;
-import org.zjj.myspring.beans.factory.DisposableBean;
-import org.zjj.myspring.beans.factory.InitializingBean;
+import org.zjj.myspring.beans.factory.*;
 import org.zjj.myspring.beans.factory.config.AutowireCapableBeanFactory;
 import org.zjj.myspring.beans.factory.config.BeanDefinition;
 import org.zjj.myspring.beans.factory.config.BeanPostProcessor;
@@ -75,7 +72,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
         try {
             bean = createBeanInstance(beanDefinition);
+            // to resolve the circular reference, put the bean instance to the cache early
+            if (beanDefinition.isSingleton()) {
+                Object finalBean = bean;
+                addSingletonFactoy(beanName, () -> getEarlyBeanReference(beanName, beanDefinition, finalBean));
+            }
+
             boolean continuePopulation = applyBeanPostProcessorsAfterInstantiation(bean, beanName);
+            if (!continuePopulation) {
+                return bean;
+            }
             // Before setting properties, allow post-processors to modify the bean instance.
             applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
             // populate bean with property values
@@ -87,10 +93,26 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
 
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+        Object exposedObject = bean;
         if (beanDefinition.isSingleton()) {
-            addSingleton(beanName, bean);
+            // if there is a proxy object, return the wrapped object within it
+            exposedObject = getSingleton(beanName);
+            addSingleton(beanName, exposedObject);
         }
-        return bean;
+        return exposedObject;
+    }
+
+    private Object getEarlyBeanReference(String beanName, BeanDefinition beanDefinition, Object bean) {
+        Object exposedObject = bean;
+        for (BeanPostProcessor bp : getBeanPostProcessors()) {
+            if (bp instanceof InstantiationAwareBeanPostProcessor) {
+                exposedObject = ((InstantiationAwareBeanPostProcessor) bp).getEarlyBeanReference(exposedObject, beanName);
+                if (exposedObject == null) {
+                    return exposedObject;
+                }
+            }
+        }
+        return exposedObject;
     }
 
     private boolean applyBeanPostProcessorsAfterInstantiation(Object bean, String beanName) {

@@ -501,3 +501,28 @@ public class AutowiredAnnotationBeanPostProcessor implements
 Similar to process of @Component, we check every field of a bean, if the field is annotated with @Value, we inject the value.
 
 @Autowired is a special annotation to inject the bean.
+
+### Circular Dependency
+
+To solve the circular Dependency we use 3 level cache.
+
+- singletonObjects: cache the singleton bean
+- earlySingletonObjects: cache the early singleton bean(they are not fully initialized, i.e. they may be not be populated with properties)
+- singletonFactories: cache the singleton factory, these factory can return a singleton bean or a proxy object, they have a chance to return early proxy object i.e. their wrapped object is not fully initialized.
+
+**The process of creating a bean:**
+
+Now we can talk about the process of creating a bean:
+
+Image we have a bean A, which has a property of bean B, and bean B has a property of bean A. And the bean A is a proxy bean.
+
+1. we create the bean A, and cache it in the singletonFactories.
+2. process property population of A
+3. find the property B, and create the bean B.
+4. bean B is cached in singletonFactories, but beacuse B is not a proxy bean, the factory method always return the bean B.
+5. populate the property of B, and find the property A.
+6. get the A from the singletonFactories, but this time, the factory method return the proxy object of A.
+7. B get the proxy object of A, and populate the property of A.
+8. B is fully initialized, we put it in the level 1 cache.
+9. A get the proxy object of B, and populate the property of B.
+10. A is fully initialized, we put it in the level 1 cache.
